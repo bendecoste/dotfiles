@@ -15,8 +15,14 @@ LIGHT_GREEN="\[\033[1;32m\]"
 
 HISTCONTROL=ignoredups:ignorespace
 
+<<<<<<< HEAD
 # Make bash check its window size after a process completes
 shopt -s checkwinsize
+=======
+set -o vi
+
+# Make bash check its window size after a process completes
+>>>>>>> 79c1c339bbe9569e03dae2cb50af7118b4719766
 # Tell the terminal about the working directory at each prompt.
 if [ "$TERM_PROGRAM" == "Apple_Terminal" ] && [ -z "$INSIDE_EMACS" ]; then
     update_terminal_cwd() {
@@ -31,8 +37,12 @@ if [ "$TERM_PROGRAM" == "Apple_Terminal" ] && [ -z "$INSIDE_EMACS" ]; then
     PROMPT_COMMAND="update_terminal_cwd; $PROMPT_COMMAND"
 fi
 
+<<<<<<< HEAD
 source ~/.nvm/nvm.sh
 source ~/.rvm/scripts/rvm
+=======
+. ~/.nvm/nvm.sh
+>>>>>>> 79c1c339bbe9569e03dae2cb50af7118b4719766
 
 if [ -f ~/.git-completetion.bash ]; then
   . ~/.git-completion.bash
@@ -44,19 +54,35 @@ function parse_git_branch {
 
 PS1="$LIGHT_GRAY\W($RED\$(parse_git_branch)$LIGHT_GRAY) ➜ $CLEAR"
 
+<<<<<<< HEAD
 alias hintbrws='cp ~/Documents/work/slashjoin/.jshintrc.browser ~/Documents/work/slashjoin/.jshintrc'
 alias hintnode='cp ~/Documents/work/slashjoin/.jshintrc.node ~/Documents/work/slashjoin.jshintrc'
 alias clr='clear'
 alias ls='ls -GF'
 alias sj='cd ~/Documents/work/slashjoin'
 alias serv='cd ~/Documents/work/services'
+=======
+#PS1="\033[32m[\H/\W $]\033[0m "
+
+alias hintbrws='cp ~/Documents/slashjoin/.jshintrc.browser ~/Documents/slashjoin/.jshintrc'
+alias hintnode='cp ~/Documents/slashjoin/.jshintrc.node ~/Documents/slashjoin.jshintrc'
+alias clr='clear'
+alias ls='ls -GF'
+alias sj='cd ~/Documents/slashjoin'
+alias serv='cd ~/Documents/services'
+>>>>>>> 79c1c339bbe9569e03dae2cb50af7118b4719766
 alias starthaproxy="sudo launchctl start org.haproxy"
 alias stophaproxy="sudo launchctl stop org.haproxy"
 
 alias grep="grep --color=auto"
 
 
+<<<<<<< HEAD
 alias gis="node ~/Documents/work/slashjoin/server.dev.js"
+=======
+alias gis="node ~/Documents/slashjoin/server.dev.js"
+alias gisd=" DEBUG_MODE=1 node ~/Documents/slashjoin/server.dev.js"
+>>>>>>> 79c1c339bbe9569e03dae2cb50af7118b4719766
 
 alias gco='git checkout' # Checkout shortcut
 alias gc='git cherry -v' # Show unpushed commits
@@ -65,8 +91,29 @@ alias gfm='git fetch; git  merge --no-ff' # Fetch and merge
 alias gpr='git pull --rebase origin' # Pull rebase from origin
 alias gb='git branch'
 alias gd='git diff'
+<<<<<<< HEAD
 alias pyhub='python ~/Documents/hack/GoHub/py/gist.py'
 
 # path exports
 export PATH="$PATH:/Users/bdecoste/Documents/work/slashjoin/node_modules/.bin"
 export EDITOR=vim
+=======
+
+# path exports
+export PATH="$PATH:/Users/bdecoste/Documents/slashjoin/node_modules/.bin"
+export EDITOR=vim
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+source ~/.rvm/scripts/rvm
+
+redis-del() {
+  redis-cli KEYS $1 | xargs redis-cli DEL
+}
+del-cache() {
+  redis-del "data:*"
+}
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+>>>>>>> 79c1c339bbe9569e03dae2cb50af7118b4719766
