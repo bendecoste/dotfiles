@@ -3,12 +3,16 @@ call vundle#rc()
 Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-surround'
 Bundle 'kien/ctrlp.vim'
-Bundle 'stash/syntastic'
+Bundle 'scrooloose/syntastic'
 Bundle 'ervandew/supertab'
 Bundle 'mileszs/ack.vim'
+Bundle 'bendecoste/gitsplit'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle "daylerees/colour-schemes", { "rtp": "vim-themes/" }
+Bundle 'chriskempson/base16-vim'
+Bundle 'Raimondi/delimitMate'
 
 " Config {
-  filetype plugin indent on
   syntax on
   set nobackup
   set noswapfile
@@ -30,11 +34,12 @@ Bundle 'mileszs/ack.vim'
   set smartcase
   set nostartofline
   set termencoding=utf-8
-  set undofile
-  set undolevels=1000
   set nowrap
   set expandtab
   set smarttab
+  set autoindent
+
+  let g:airline_powerline_fonts=1
 
   " tab width {
     set ts=2
@@ -48,7 +53,7 @@ Bundle 'mileszs/ack.vim'
 		" set foldtext=FoldText()
   "}
   " wildmenu {
-    set wildignore=.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc,*/.tox/*,*.egg-info/*
+    set wildignore=.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc,*/.tox/*,*.egg-info/*,node_modules*
     set wildmenu
     set wildmode=list:longest,full
   "}
@@ -56,8 +61,6 @@ Bundle 'mileszs/ack.vim'
   " Mappings {
     let g:syntastic_enable_signs=1
     let g:syntastic_disabled_filetypes = ['html']
-    let mapleader=","
-
     :nmap <silent> <c-q> /<c-r>//e<cr>:let @/='<c-r>/'<cr>
     :nmap \p :set paste!<CR>
     :nmap j gj
@@ -70,10 +73,9 @@ Bundle 'mileszs/ack.vim'
   " }
 
   " ctrlP options {
-    :let g:ctrlp_map = '<Leader>t'
+    :let g:ctrlp_map = '\t'
     :let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
     :let g:ctrlp_dotfiles = 0
-  " }
 " }
 
 " Functions {
@@ -88,24 +90,6 @@ Bundle 'mileszs/ack.vim'
 
   nnoremap <C-l> :call ToggleNumber()<cr>
 
-  let g:syntastic_javascript_jshint_conf = ".jshintrc.node"
-  function! ToggleJSHint()
-    if !exists("b:syntastic_javascript_jshint_conf")
-      let b:syntastic_javascript_jshint_conf = g:syntastic_javascript_jshint_conf
-    endif
-
-    if b:syntastic_javascript_jshint_conf == ".jshintrc.node"
-      let b:syntastic_javascript_jshint_conf = ".jshintrc.browser"
-      echo "Syntastic now in BROWSER MODE"
-    else
-      let b:syntastic_javascript_jshint_conf = ".jshintrc.node"
-      echo "Syntastic now in NODE MODE"
-    endif
-
-  endfunc
-
-  :nmap \j :call ToggleJSHint()<CR>
-
   fun! <SID>StripTrailingWhitespaces()
       let l = line(".")
       let c = col(".")
@@ -115,10 +99,36 @@ Bundle 'mileszs/ack.vim'
   autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 " }
 
-colorscheme distinguished
+set background=dark
+colorscheme grb256
 
 " Other color options {
-	hi StatusLine cterm=bold
-	hi StatusLineNC cterm=bold
+	" hi StatusLine cterm=bold
+	" hi StatusLineNC cterm=bold
 " }
 
+let g:EasyMotion_leader_key = ','
+
+" command! -complete=shellcmd -nargs=+ GitSplit call s:RunShellCommand('git show '.<q-args>)
+" function! s:RunShellCommand(cmdline)
+"   echo a:cmdline
+"   let expanded_cmdline = a:cmdline
+"   for part in split(a:cmdline, ' ')
+"      if part[0] =~ '\v[%#<]'
+"         let expanded_part = fnameescape(expand(part))
+"         let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
+"      endif
+"   endfor
+"   botright vnew
+"   setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
+"   execute '$read !'. expanded_cmdline
+"   setlocal nomodifiable
+"   set filetype=javascript
+"   1
+" endfunction
+
+" fun! GitSplit(arg)
+"   RunShellCommand(a:arg)
+" endfun
+
+" command -nargs=* Gitsplit execute GitSplit('<args>')

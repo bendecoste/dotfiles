@@ -42,12 +42,13 @@ function parse_git_branch {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'
 }
 
-PS1="$LIGHT_GRAY\W($RED\$(parse_git_branch)$LIGHT_GRAY) ➜ $CLEAR"
+PS1="$BLUE\w $GREEN\$(parse_git_branch)$LIGHT_GRAY: $CLEAR"
+PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 
 #PS1="\033[32m[\H/\W $]\033[0m "
 
 alias clr='clear'
-alias ls='gls -F --group-directories-first --color'
+alias ls='gls -F --group-directories-first'
 alias sj='cd ~/Documents/slashjoin'
 alias serv='cd ~/Documents/services'
 alias starthaproxy="sudo launchctl start org.haproxy"
@@ -58,6 +59,8 @@ alias grep="grep --color=auto"
 
 alias gis="node ~/Documents/slashjoin/server.dev.js"
 alias gisd=" DEBUG_MODE=1 node ~/Documents/slashjoin/server.dev.js"
+
+alias psrestart="fab local services:stop; fab local services:start"
 
 # path exports
 export PATH="$PATH:/Users/bdecoste/Documents/slashjoin/node_modules/.bin"
@@ -76,6 +79,9 @@ del-cache() {
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 export PATH="/usr/local/Cellar/git/1.8.2/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/share/python:$PATH"
 source ~/.git-completion.bash
 
 [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+export PATH=/usr/local/bin:/usr/local/share/python:/usr/local/sbin:/usr/local/Cellar/git/1.8.2/bin:/usr/local/heroku/bin:/Users/bdecoste/.rvm/gems/ruby-1.9.2-p320/bin:/Users/bdecoste/.rvm/gems/ruby-1.9.2-p320@global/bin:/Users/bdecoste/.rvm/rubies/ruby-1.9.2-p320/bin:/Users/bdecoste/.rvm/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/usr/local/share/python:/usr/local/sbin:/usr/local/Cellar/git/1.8.2/bin:/usr/local/heroku/bin:/Users/bdecoste/.rvm/gems/ruby-1.9.2-p320/bin:/Users/bdecoste/.rvm/gems/ruby-1.9.2-p320@global/bin:/Users/bdecoste/.rvm/rubies/ruby-1.9.2-p320/bin:/Users/bdecoste/.rvm/bin:/Users/bdecoste/.nvm/v0.10.11/bin:/Users/bdecoste/Documents/slashjoin/node_modules/.bin:/Users/bdecoste/Documents/slashjoin/node_modules/.bin:/Users/bdecoste/.rvm/bin
