@@ -3,16 +3,14 @@ call vundle#rc()
 Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-surround'
 Bundle 'kien/ctrlp.vim'
-Bundle 'scrooloose/syntastic'
+Bundle 'stash/syntastic'
 Bundle 'ervandew/supertab'
 Bundle 'mileszs/ack.vim'
-Bundle 'bendecoste/gitsplit'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle "daylerees/colour-schemes", { "rtp": "vim-themes/" }
-Bundle 'chriskempson/base16-vim'
-Bundle 'Raimondi/delimitMate'
+Bundle 'bendecoste/vim-togglenumber'
+Bundle 'bendecoste/vim-whitespace'
 
 " Config {
+  filetype plugin indent on
   syntax on
   set nobackup
   set noswapfile
@@ -39,8 +37,6 @@ Bundle 'Raimondi/delimitMate'
   set smarttab
   set autoindent
 
-  let g:airline_powerline_fonts=1
-
   " tab width {
     set ts=2
     set shiftwidth=2
@@ -53,7 +49,7 @@ Bundle 'Raimondi/delimitMate'
 		" set foldtext=FoldText()
   "}
   " wildmenu {
-    set wildignore=.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc,*/.tox/*,*.egg-info/*,node_modules*
+    set wildignore=.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif,*.pyc,*/.tox/*,*.egg-info/*
     set wildmenu
     set wildmode=list:longest,full
   "}
@@ -61,6 +57,8 @@ Bundle 'Raimondi/delimitMate'
   " Mappings {
     let g:syntastic_enable_signs=1
     let g:syntastic_disabled_filetypes = ['html']
+    let mapleader="\\"
+
     :nmap <silent> <c-q> /<c-r>//e<cr>:let @/='<c-r>/'<cr>
     :nmap \p :set paste!<CR>
     :nmap j gj
@@ -73,21 +71,15 @@ Bundle 'Raimondi/delimitMate'
   " }
 
   " ctrlP options {
-    :let g:ctrlp_map = '\t'
+    :let g:ctrlp_map = '<Leader>t'
     :let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
     :let g:ctrlp_dotfiles = 0
+  " }
 " }
 
 " Functions {
   "toggle between relative and absolute line numbering
-  function! ToggleNumber()
-    if(&relativenumber == 1)
-      set number
-    else
-      set relativenumber
-    endif
-  endfunc
-
+  set relativenumber
   nnoremap <C-l> :call ToggleNumber()<cr>
 
   fun! <SID>StripTrailingWhitespaces()
@@ -99,36 +91,23 @@ Bundle 'Raimondi/delimitMate'
   autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 " }
 
+let g:solarized_termcolors=256
+let g:solarized_termtrans=2 " makes the background not change color
 set background=dark
+" colorscheme solarized
 colorscheme grb256
+" colorscheme dw_green
 
 " Other color options {
 	" hi StatusLine cterm=bold
 	" hi StatusLineNC cterm=bold
 " }
 
-let g:EasyMotion_leader_key = ','
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
-" command! -complete=shellcmd -nargs=+ GitSplit call s:RunShellCommand('git show '.<q-args>)
-" function! s:RunShellCommand(cmdline)
-"   echo a:cmdline
-"   let expanded_cmdline = a:cmdline
-"   for part in split(a:cmdline, ' ')
-"      if part[0] =~ '\v[%#<]'
-"         let expanded_part = fnameescape(expand(part))
-"         let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
-"      endif
-"   endfor
-"   botright vnew
-"   setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
-"   execute '$read !'. expanded_cmdline
-"   setlocal nomodifiable
-"   set filetype=javascript
-"   1
-" endfunction
-
-" fun! GitSplit(arg)
-"   RunShellCommand(a:arg)
-" endfun
-
-" command -nargs=* Gitsplit execute GitSplit('<args>')
